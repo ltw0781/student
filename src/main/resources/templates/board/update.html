@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>게시판 프로젝트</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+    <main>
+        <div class="container py-5">
+            <div class="row justify-content-center">
+                <div class="col-12 col-md-10 col-lg-6">
+                    <h1 class="text-center">게시글 수정</h1>
+                    <form id="form" action="/board/update" method="post" th:object="${board}">
+                        <input type="hidden" th:field="*{no}">
+                        <div class="mb-3">
+                            <label for="" class="form-label">제목</label>
+                            <input type="text" class="form-control" th:field="*{title}" aria-describedby="helpTitle"
+                                placeholder="제목을 입력해주세요" />
+                        </div>
+                        <div class="mb-3">
+                            <label for="" class="form-label">작성자</label>
+                            <input type="text" class="form-control" th:field="*{writer}" aria-describedby="helpWriter"
+                                placeholder="작성자를 입력해주세요" />
+                        </div>
+                        <div class="mb-3">
+                            <label for="" class="form-label">내용</label>
+                            <textarea class="form-control" th:field="*{content}" rows="5"></textarea>
+                        </div>
+                        <div class="d-grid gap-2 d-md-flex justify-content-center mt-2">
+                            <button type="submit" class="btn btn-primary w-100">수정</button>
+                        </div>
+                        <div class="d-grid gap-2 d-md-flex justify-content-center mt-2">
+                            <button type="button" class="btn btn-outline-primary w-100" onclick="moveList()">목록</button>
+                            <button type="button" class="btn btn-outline-danger w-100"
+                                onclick="actionDelete()">삭제</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </main>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        // 👩‍💻 모델 객체를 자바스크립트로 가져오는 방법
+        let no = '[[${board.no}]]'
+        // 폼
+        let $form = document.getElementById("form")
+
+        // 목록 화면 이동
+        function moveList() {
+            location.href = '/board/list'
+        }
+
+        // 삭제 요청
+        function actionDelete() {
+            let check = confirm('정말로 삭제하시겠습니까?')
+            if (check) {
+                $form.action = '/board/delete'
+                $form.submit()
+            }
+        }
+    </script>
+</body>
+
+</html>
