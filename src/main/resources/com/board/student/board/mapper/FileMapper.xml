@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- namespace="매퍼 인터페이스 경로" --> 
+<mapper namespace="com.board.student.board.mapper.FileMapper">
+
+    <select id="list" resultType="Files">
+        SELECT *
+        FROM file
+        ORDER BY no DESC
+    </select>
+
+    <!-- 파일 조회 -->
+    <select id="select" resultType="Files">
+        SELECT *
+        FROM file
+        WHERE no = #{no}
+    </select>
+
+    <!-- 파일 조회 -->
+    <select id="selectById" resultType="Files">
+        SELECT *
+        FROM file
+        WHERE id = #{id}
+    </select>
+        
+    <!-- 파일 등록 -->
+    <insert id="insert">
+        INSERT INTO file( id, parent_table, parent_no, name, path, size, sort_order, is_main )
+        VALUES ( #{id}, #{parentTable}, #{parentNo}, #{name}, #{path}, #{size}, #{sortOrder}, #{isMain} )
+    </insert>
+
+    <!-- 파일 수정 -->
+    <update id="update">
+        UPDATE file
+        <set>
+            <if test="parentTable != null">parent_table = #{parentTable},</if>
+            <if test="parentNo != null">parent_no = #{parentNo},</if>
+            <if test="name != null">name = #{name},</if>
+            <if test="path != null">path = #{path},</if>
+            <if test="size != null">size = #{size},</if>
+            <if test="contentType != null">content_type = #{contentType},</if>
+            <if test="sortOrder != null">sort_order = #{sortOrder},</if>
+            <if test="isMain != null">is_main = #{isMain}</if>
+        </set>
+        WHERE no = #{no}
+    </update>
+
+    <!-- 파일 수정 -->
+    <update id="updateById">
+        UPDATE file
+        <set>
+            <if test="parentTable != null">parent_table = #{parentTable},</if>
+            <if test="parentNo != null">parent_no = #{parentNo},</if>
+            <if test="name != null">name = #{name},</if>
+            <if test="path != null">path = #{path},</if>
+            <if test="size != null">size = #{size},</if>
+            <if test="contentType != null">content_type = #{contentType},</if>
+            <if test="sortOrder != null">sort_order = #{sortOrder},</if>
+            <if test="isMain != null">is_main = #{isMain}</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+    <!-- 파일 삭제 -->
+    <delete id="delete">
+        DELETE FROM file
+        WHERE no = #{no}
+    </delete>
+
+    <!-- 파일 삭제 -->
+    <delete id="deleteById">
+        DELETE FROM file
+        WHERE id = #{id}
+    </delete>
+
+</mapper>

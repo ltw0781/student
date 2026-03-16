@@ -1,8 +1,7 @@
--- Active: 1763393025352@@127.0.0.1@3306@boards
+-- Active: 1752121213398@@127.0.0.1@3306@boards
 
 -- 외래키 무시
 SET FOREIGN_KEY_CHECKS = 0;
-
 
 CREATE TABLE `board` (
     `no` int NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -16,10 +15,10 @@ CREATE TABLE `board` (
 
 TRUNCATE TABLE board;
 
-INSERT INTO board ( id, title, writer, content )
-VALUES
-    ( UUID(), '제목1', '작성자1', '내용1' )
-    ,(UUID(), '제목2', '작성자2', '내용2' )
-    ,(UUID(), '제목3', '작성자3', '내용3' ) 
-    ,(UUID(), '제목4', '작성자4', '내용4' ) 
-    ,(UUID(), '제목5', '작성자5', '내용5' );
+INSERT INTO
+    board (id, title, writer, content)
+VALUES (UUID(), '제목1', '작성자1', '내용1'),
+    (UUID(), '제목2', '작성자2', '내용2'),
+    (UUID(), '제목3', '작성자3', '내용3'),
+    (UUID(), '제목4', '작성자4', '내용4'),
+    (UUID(), '제목5', '작성자5', '내용5');

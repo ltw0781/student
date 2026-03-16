@@ -33,12 +33,12 @@
                             <th>등록일자</th>
                             <th>수정일자</th>
                         </tr>
-                        <th:block th:if="${ list == null || list.isEmpty() }">
+                        <th:block th:if="${ boardList == null || boardList.isEmpty() }">
                             <tr>
                                 <td colspan="5">조회된 데이터가 없습니다.</td>
                             </tr>
                         </th:block>
-                        <th:block th:each="board : ${list}">
+                        <th:block th:each="board : ${boardList}">
                             <tr class="align-middle">
                                 <td th:text="${board.no}">번호</td>
                                 <td class="text-start">
