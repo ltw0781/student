@@ -6,22 +6,43 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 <!-- namespace="매퍼 인터페이스 경로" --> 
 <mapper namespace="com.board.student.board.mapper.BoardMapper">
 
+    <!-- resultMap 정의 -->
+    <resultMap id="boardMap" type="Board">
+        <id property="no" column="no" />
+        <result property="no" column="no" />
+        <result property="title" column="title" />
+        <result property="writer" column="writer" />
+        <result property="content" column="content" />
+        <result property="createdAt" column="created_at" />
+        <result property="updatedAt" column="updated_at" />
+        <!-- M:n(다대다) 매핑 -->
+        <collection property="fileList" 
+                    ofType="Files"
+                    select="com.board.student.board.mapper.FileMapper.listByParent"
+                    column="{parentTable=parent_table, parentNo=no}"
+                />
+    </resultMap>
+
+
+
     <!-- 게시글 목록 -->
-    <select id="list" resultType="Board">
-        SELECT *
-        FROM board
+    <select id="list" resultMap="boardMap">
+        SELECT b.*
+              ,'board' AS parent_table
+        FROM board b
         ORDER BY no DESC
     </select>
 
     <!-- 게시글 조회 -->
-    <select id="select" resultType="Board">
-        SELECT *
-        FROM board
+    <select id="select" resultMap="boardMap">
+        SELECT b.*
+              ,'board' AS parent_table
+        FROM board b
         WHERE no = #{no}
     </select>
 
     <!-- 게시글 등록 -->
-    <insert id="insert">
+    <insert id="insert" useGeneratedKeys="true" keyProperty="no">
         INSERT INTO board( id, title, writer, content )
         VALUES ( #{id}, #{title}, #{writer}, #{content} )
     </insert>

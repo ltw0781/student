@@ -13,7 +13,7 @@
     <main>
         <div class="container py-5">
             <div class="row justify-content-center">
-                <div class="col-12 col-md-10 col-lg-6">
+                <div class="col-12 col-md-10 col-lg-10">
                     <h1 class="text-center">게시글 조회</h1>
                     <form action="/board/create" method="post" th:object="${board}">
                         <div class="mb-3">
@@ -29,6 +29,26 @@
                         <div class="mb-3">
                             <label for="" class="form-label">내용</label>
                             <textarea class="form-control" th:field="*{content}" rows="5" readonly></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="" class="form-label">첨부파일</label>
+                            <div class="row g-2">
+                                <th:block th:each=" file : ${board.fileList} ">
+                                    <div class="col-12 col-md-6 col-lg-3">
+                                        <div class="card">
+                                            <img th:src="@{/files/{id}(id=${file.id})}" th:alt="${file.name}"
+                                                class="card-img-top" />
+                                            <h5 class="card-title fs-6" th:text="${file.name}">파일명</h5>
+                                            <ul class="list-group list-group-flush">
+                                                <li class="list-group-item" th:text="${file.size}">파일 크기</li>
+                                                <li class="list-group-item" th:text="${file.contentType}">파일 타입</li>
+                                                <li class="list-group-item" th:text="${file.sortOrder}">순서</li>
+                                                <li class="list-group-item" th:text="${file.isMain}">대표여부</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </th:block>
+                            </div>
                         </div>
                         <div class="d-grid gap-2 d-md-flex justify-content-center">
                             <button type="button" class="btn btn-outline-primary w-100" onclick="moveList()">목록</button>

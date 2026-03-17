@@ -5,15 +5,20 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.board.student.board.dto.Board;
+import com.board.student.board.dto.ParentTable;
 import com.board.student.board.mapper.BoardMapper;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class BoardServiceImpl implements BoardService{
 
     private final BoardMapper boardMapper;
+
+    private final FileService fileService;
 
     @Override
     public List<Board> list() throws Exception {
@@ -29,7 +34,13 @@ public class BoardServiceImpl implements BoardService{
 
     @Override
     public boolean insert(Board board) throws Exception {
+        // 게시글 등록
         int result = boardMapper.insert(board);
+        int parentNo = board.getNo();
+
+        // 파일 업로드
+        int fileResult = fileService.upload(board.getFiles(), ParentTable.BOARD, parentNo);
+        log.info("파일 업로드 - {}개 파일 등록 : ", fileResult);
         return result > 0;
     }
 

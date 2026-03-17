@@ -37,6 +37,8 @@ public class BoardController {
 
         // 데이터 요청
         List<Board> boardList = boardService.list();
+        log.info("### 게시글 목록 ###");
+        log.info("#" + boardList);
 
         // 모델 등록
         model.addAttribute("boardList", boardList);

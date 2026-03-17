@@ -20,6 +20,7 @@
                     </div>
                     <table class="table table-bordered table-striped table-hover table-responsive mt-3 text-center">
                         <colgroup>
+                            <col class="col-2"> <!-- 썸네일 -->
                             <col class="col-1"> <!-- 번호 -->
                             <col class="col-3"> <!-- 제목 -->
                             <col class="col-2"> <!-- 작성자 -->
@@ -27,6 +28,7 @@
                             <col class="col-2"> <!-- 수정일자 -->
                         </colgroup>
                         <tr class="table-dark">
+                            <th>썸네일</th>
                             <th width="150">번호</th>
                             <th width="300">제목</th>
                             <th>작성자</th>
@@ -35,11 +37,21 @@
                         </tr>
                         <th:block th:if="${ boardList == null || boardList.isEmpty() }">
                             <tr>
-                                <td colspan="5">조회된 데이터가 없습니다.</td>
+                                <td colspan="6">조회된 데이터가 없습니다.</td>
                             </tr>
                         </th:block>
                         <th:block th:each="board : ${boardList}">
                             <tr class="align-middle">
+                                <td>
+                                    <!-- <th:block th:if="${ board.fileList != null && !board.fileList.isEmpty() }">
+                                        <img th:src="@{/files/{id}(id=${board.fileList[0].id})}" class="img-fluid" alt="" />
+                                    </th:block> -->
+                                    <th:block th:if="${ board.fileList != null && !board.fileList.isEmpty() }">
+                                        <th:block th:each=" file : ${board.fileList} ">
+                                            <img th:if="${file.isMain}" th:src="@{/files/{id}(id=${file.id})}" class="img-fluid" alt="" />
+                                        </th:block>
+                                    </th:block>
+                                </td>
                                 <td th:text="${board.no}">번호</td>
                                 <td class="text-start">
                                     <a th:href="|/board/detail?no=${board.no}|" th:text="${board.title}">제목</a>

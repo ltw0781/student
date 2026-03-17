@@ -28,8 +28,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         
     <!-- 파일 등록 -->
     <insert id="insert">
-        INSERT INTO file( id, parent_table, parent_no, name, path, size, sort_order, is_main )
-        VALUES ( #{id}, #{parentTable}, #{parentNo}, #{name}, #{path}, #{size}, #{sortOrder}, #{isMain} )
+        INSERT INTO file( id, parent_table, parent_no, name, path, size, content_type, sort_order, is_main )
+        VALUES ( #{id}, #{parentTable}, #{parentNo}, #{name}, #{path}, #{size}, #{contentType}, #{sortOrder}, #{isMain} )
     </insert>
 
     <!-- 파일 수정 -->
@@ -75,5 +75,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         DELETE FROM file
         WHERE id = #{id}
     </delete>
+
+
+    <!-- 부모 기준 목록 -->
+    <select id="listByParent" resultType="Files">
+        SELECT *
+        FROM file
+        WHERE parent_table = #{parentTable}
+            AND parent_no = #{parentNo}
+        ORDER BY sort_order ASC, created_at DESC
+    </select>
 
 </mapper>
