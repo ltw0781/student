@@ -20,6 +20,41 @@
   font-style: normal;
 }
 
+
+:root {
+  --fs-title: 1.5rem;
+  /* 24px */
+  --fs-subtitle: 1.25rem;
+  /* 20px */
+  --fs-text: 1rem;
+  /* 16px */
+  --fs-middle: 0.875rem;
+  /* 14px */
+  --fs-small: 0.75rem;
+  /* 12px */
+}
+
 body {
   font-family: 'Gmarket Sans', sans-serif !important;
+}
+
+
+.fs-title {
+  font-size: var(--fs-title);
+}
+
+.fs-subtitle {
+  font-size: var(--fs-subtitle);
+}
+
+.fs-text {
+  font-size: var(--fs-text);
+}
+
+.fs-middle {
+  font-size: var(--fs-middle);
+}
+
+.fs-small {
+  font-size: var(--fs-small);
 }
