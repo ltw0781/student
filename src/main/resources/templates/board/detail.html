@@ -2,82 +2,113 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>게시판 프로젝트</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="/css/style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>게시판 프로젝트</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
 </head>
 
 <body>
-    <main>
-        <div class="container py-5">
-            <div class="row justify-content-center">
-                <div class="col-12 col-md-10 col-lg-10">
-                    <h1 class="text-center">게시글 조회</h1>
-                    <form action="/board/create" method="post" th:object="${board}">
-                        <div class="mb-3">
-                            <label for="" class="form-label">제목</label>
-                            <input type="text" class="form-control" th:field="*{title}" aria-describedby="helpTitle"
-                                placeholder="제목을 입력해주세요" readonly />
-                        </div>
-                        <div class="mb-3">
-                            <label for="" class="form-label">작성자</label>
-                            <input type="text" class="form-control" th:field="*{writer}" aria-describedby="helpWriter"
-                                placeholder="작성자를 입력해주세요" readonly />
-                        </div>
-                        <div class="mb-3">
-                            <label for="" class="form-label">내용</label>
-                            <textarea class="form-control" th:field="*{content}" rows="5" readonly></textarea>
-                        </div>
-                        <div class="mb-3">
-                            <label for="" class="form-label">첨부파일</label>
-                            <div class="row g-2">
-                                <!-- <th:block th:if="${ board.fileList == null || board.fileList.isEmpty() }">
+  <main>
+    <div class="container py-5">
+      <div class="row justify-content-center">
+        <div class="col-12 col-md-10 col-lg-10">
+          <h1 class="text-center">게시글 조회</h1>
+          <form action="/board/create" method="post" th:object="${board}">
+            <div class="mb-3">
+              <label for="" class="form-label">제목</label>
+              <input type="text" class="form-control" th:field="*{title}" aria-describedby="helpTitle"
+                placeholder="제목을 입력해주세요" readonly />
+            </div>
+            <div class="mb-3">
+              <label for="" class="form-label">작성자</label>
+              <input type="text" class="form-control" th:field="*{writer}" aria-describedby="helpWriter"
+                placeholder="작성자를 입력해주세요" readonly />
+            </div>
+            <div class="mb-3">
+              <label for="" class="form-label">내용</label>
+              <textarea class="form-control" th:field="*{content}" rows="5" readonly></textarea>
+            </div>
+            <div class="mb-3">
+              <label for="" class="form-label">첨부파일</label>
+              <div class="row g-2">
+                <!-- <th:block th:if="${ board.fileList == null || board.fileList.isEmpty() }">
                                     <p colspan="6">조회된 데이터가 없습니다.</p>
                                 </th:block> -->
-                                <th:block th:each=" file : ${board.fileList} ">
-                                    <div class="col-12 col-md-6 col-lg-3">
-                                        <div class="card">
-                                            <img th:src="@{/files/{id}(id=${file.id})}" th:alt="${file.name}"
-                                                class="card-img-top" />
-                                            <h5 class="card-title fs-6" th:text="${file.name}">파일명</h5>
-                                            <ul class="list-group list-group-flush">
-                                                <li class="list-group-item" th:text="${file.size}">파일 크기</li>
-                                                <li class="list-group-item" th:text="${file.contentType}">파일 타입</li>
-                                                <li class="list-group-item" th:text="${file.sortOrder}">순서</li>
-                                                <li class="list-group-item" th:text="${file.isMain}">대표여부</li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </th:block>
+                <th:block th:each=" file : ${board.fileList} ">
+                  <div class="col-12 col-md-6 col-lg-3">
+                    <div class="card">
+                      <img th:src="@{/files/{id}(id=${file.id})}" th:alt="${file.name}" class="card-img-top"
+                        style="height: 140px; object-fit: contain;" />
+                      <!-- 대표 파일 여부 -->
+                      <div class="position-absolute top-0 start-0 ms-2 mt-1" th:if="${file.isMain}">
+                        <span class="badge bg-primary">대표</span>
+                      </div>
+                      <!-- 순서 -->
+                      <div class="position-absolute top-0 end-0 me-2 mt-1">
+                        <span class="badge bg-success" th:text="${file.sortOrder + 1}">대표</span>
+                      </div>
+                      <div class="card-body">
+                        <h5 class="card-title fs-6" th:text="${file.name}">파일명</h5>
+                      </div>
+                      <ul class="list-group list-group-flush">
+                        <li class="list-group-item">
+                          <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                              <!--
+                                a > b : a가 b보다 크다              - gt (greater than)
+                                a >= b : a가 b보다 크거나 같다      - ge (greater equal)
+                                a < b : a가 b보다 작다              - lt (less than)
+                                a <= b : a가 b보다 작거나 같다      - le (less equal)
+                              -->
+                              <th:block th:if="${file.size lt 1024}" th:text="|${file.size} B|">
+                              </th:block>
+                              <!-- #numbers.formatDecimal( 값, 정수부 최소자리수, 소수 ) -->
+                              <th:block th:if="${file.size ge 1024 and file.size lt 1024*1024}"
+                                th:text="|${#numbers.formatDecimal(file.size / 1024.0, 1, 2)} KB|">
+                              </th:block>
+                              <th:block th:if="${file.size ge 1024*1024 and file.size lt 1024*1024*1024}"
+                                th:text="|${#numbers.formatDecimal(file.size / (1024.0*1024.0), 1, 2)} MB|">
+                              </th:block>
                             </div>
-                        </div>
-                        <div class="d-grid gap-2 d-md-flex justify-content-center">
-                            <button type="button" class="btn btn-outline-primary w-100" onclick="moveList()">목록</button>
-                            <button type="button" class="btn btn-primary w-100" onclick="moveUpdate()">수정</button>
-                        </div>
-                    </form>
-                </div>
+                            <div>
+                              <span th:text="${file.contentType}">파일 타입</span>
+                            </div>
+                          </div>
+                        </li>
+                        <li class="list-group-item" th:text="${file.sortOrder + 1}">순서</li>
+                      </ul>
+                    </div>
+                  </div>
+                </th:block>
+              </div>
             </div>
+            <div class="d-grid gap-2 d-md-flex justify-content-center">
+              <button type="button" class="btn btn-outline-primary w-100" onclick="moveList()">목록</button>
+              <button type="button" class="btn btn-primary w-100" onclick="moveUpdate()">수정</button>
+            </div>
+          </form>
         </div>
-    </main>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+      </div>
+    </div>
+  </main>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
 
-    <script>
-        // 👩‍💻 모델 객체를 자바스크립트로 가져오는 방법
-        let no = '[[${board.no}]]'
+  <script>
+    // 👩‍💻 모델 객체를 자바스크립트로 가져오는 방법
+    let no = '[[${board.no}]]'
 
-        // 목록 화면 이동
-        function moveList() {
-            location.href = '/board/list'
-        }
+    // 목록 화면 이동
+    function moveList() {
+      location.href = '/board/list'
+    }
 
-        // 수정 화면 이동
-        function moveUpdate() {
-            location.href = '/board/update?no=' + no
-        }
-    </script>
+    // 수정 화면 이동
+    function moveUpdate() {
+      location.href = '/board/update?no=' + no
+    }
+  </script>
 </body>
 
 </html>
