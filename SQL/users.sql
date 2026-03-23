@@ -1,4 +1,4 @@
--- Active: 1763393025352@@127.0.0.1@3306@boards
+-- Active: 1752121213398@@127.0.0.1@3306@boards
 -- user
 CREATE TABLE `user` (
     `no` bigint NOT NULL AUTO_INCREMENT,

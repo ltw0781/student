@@ -1,4 +1,9 @@
--- Active: 1763393025352@@127.0.0.1@3306@boards
+-- Active: 1752121213398@@127.0.0.1@3306@boards
+
+DELETE FROM user WHERE username IN ('user', 'admin');
+DELETE FROM user_auth WHERE username IN ('user', 'admin');
+
+
 -- 권한
 -- 사용자 
 -- * 권한 : ROLE_USER
@@ -13,18 +18,17 @@ VALUES ( 'admin', 'ROLE_USER' );
 INSERT INTO user_auth ( username,  auth )
 VALUES ( 'admin', 'ROLE_ADMIN' );
 
-DELETE FROM user;
-DELETE FROM user_auth;
+
 
 -- 기본 데이터
 -- NoOpPasswordEncoder - 암호화 없이 로그인
 -- 사용자
-INSERT INTO user ( username, password, name, email )
-VALUES ( 'user', '123456', '사용자', 'user@mail.com' );
+-- INSERT INTO user ( username, password, name, email )
+-- VALUES ( 'user', '123456', '사용자', 'user@mail.com' );
 
 -- 관리자
-INSERT INTO user ( username, password, name, email )
-VALUES ( 'admin', '123456', '관리자', 'admin@mail.com' );
+-- INSERT INTO user ( username, password, name, email )
+-- VALUES ( 'admin', '123456', '관리자', 'admin@mail.com' );
 
 
 -- BCryptPasswordEncoder - 암호화 시
