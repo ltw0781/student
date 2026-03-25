@@ -15,6 +15,8 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 
+import com.board.student.security.service.UserDetailServiceImpl;
+
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -28,20 +30,26 @@ public class SecurityConfig {
     // @Autowired
     // private PasswordEncoder passwordEncoder;
 
+    @Autowired
+    private UserDetailServiceImpl userDetailServiceImpl;
+
     // 🔐 스프링 시큐리티 설정 메소드
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
         // 인가 설정
         http.authorizeHttpRequests( auth -> auth 
+                .requestMatchers("/**").permitAll()
                 .requestMatchers("/admin", "/admin/**").hasRole("ADMIN")
                 .requestMatchers("/user", "/user/**").hasAnyRole("USER", "ADMIN")
-                .requestMatchers("/**").permitAll()
                 .anyRequest().permitAll()
         );
 
         // 폼 로그인 설정
         http.formLogin(login -> login.permitAll());
+
+        // 사용자 정의 인증
+        http.userDetailsService(userDetailServiceImpl);
 
         // 자동 로그인
         http.rememberMe(me -> me
@@ -97,22 +105,22 @@ public class SecurityConfig {
     // ✅ SQL 쿼리 등록
     // ⭐ 사용자 인증 쿼리
     // ⭐ 사용자 권한 쿼리
-    @Bean
-    public UserDetailsService userDetailsService() {
-        JdbcUserDetailsManager userDetailsManager = new JdbcUserDetailsManager(dataSource);
+    // @Bean
+    // public UserDetailsService userDetailsService() {
+    //     JdbcUserDetailsManager userDetailsManager = new JdbcUserDetailsManager(dataSource);
 
-        // 사용자 인증 쿼리
-        String sql1 = " SELECT username as username, password as password, enabled "
-                + " FROM user "
-                + " WHERE username = ? ";
-        // 사용자 권한 쿼리
-        String sql2 = " SELECT username as username, auth "
-                + " FROM user_auth "
-                + " WHERE username  = ? ";
-        userDetailsManager.setUsersByUsernameQuery(sql1);
-        userDetailsManager.setAuthoritiesByUsernameQuery(sql2);
-        return userDetailsManager;
-    }
+    //     // 사용자 인증 쿼리
+    //     String sql1 = " SELECT username as username, password as password, enabled "
+    //             + " FROM user "
+    //             + " WHERE username = ? ";
+    //     // 사용자 권한 쿼리
+    //     String sql2 = " SELECT username as username, auth "
+    //             + " FROM user_auth "
+    //             + " WHERE username  = ? ";
+    //     userDetailsManager.setUsersByUsernameQuery(sql1);
+    //     userDetailsManager.setAuthoritiesByUsernameQuery(sql2);
+    //     return userDetailsManager;
+    // }
 
     /**
      * 🍀 AuthenticationManager 인증 관리자 빈 등록

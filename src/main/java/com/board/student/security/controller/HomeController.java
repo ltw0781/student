@@ -10,6 +10,8 @@ import com.board.student.security.service.UserService;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 
 
@@ -19,6 +21,8 @@ public class HomeController {
     
     @Autowired
     private UserService userService;
+
+    
 
     /**
      * 회원 가입 화면

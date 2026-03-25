@@ -13,6 +13,7 @@ public class Users {
     private String password;
     private String name;
     private String email;
+    private int enabled;
     private Date createdAt;
     private Date updatedAt;
 
