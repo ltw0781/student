@@ -6,7 +6,6 @@
 
     <resultMap id="UserMap" type="Users">
         <id property="no" column="no" />       <!-- PK -->
-
         <result property="no" column="no" />
         <result property="username" column="username" />
         <result property="password" column="password" />
@@ -20,7 +19,7 @@
         <!-- <collection property="authList" resultMap="AuthMap"></collection> -->
 
         <!-- 별도 SELECT 로 연결 -->
-         <collection property="authList" ofType="UserAuth" select="selectAuth" column="username"></collection>
+        <collection property="authList" ofType="UserAuth" select="selectAuth" column="username"></collection>
 
     </resultMap>
 
