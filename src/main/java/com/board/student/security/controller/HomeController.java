@@ -15,6 +15,8 @@ import com.board.student.security.service.UserService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 
 
@@ -130,6 +132,12 @@ public class HomeController {
 
         return "login";
     }
+
+    @GetMapping("/admin/AdminPage")
+    public String AdminPage() {
+        return "/admin/AdminPage";
+    }
+    
     
     
 

@@ -13,7 +13,7 @@ public class ExceptionController {
     @GetMapping("/error/403")
     public String error403() {
         log.info("접근 권한이 없습니다.");
-        return "error/403";
+        return "/error/403";
 
     }
     
