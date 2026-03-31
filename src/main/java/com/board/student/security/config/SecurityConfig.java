@@ -9,12 +9,12 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 
+import com.board.student.security.security.CustomAccessDeniedHandler;
+import com.board.student.security.security.LoginFailureHandler;
 import com.board.student.security.security.LoginSuccessHandler;
 import com.board.student.security.service.UserDetailServiceImpl;
 
@@ -37,6 +37,12 @@ public class SecurityConfig {
     @Autowired
     private LoginSuccessHandler loginSuccessHandler;
 
+    @Autowired
+    private LoginFailureHandler loginFailureHandler;
+
+    @Autowired
+    private CustomAccessDeniedHandler customAccessDeniedHandler;
+
     // 🔐 스프링 시큐리티 설정 메소드
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -54,14 +60,23 @@ public class SecurityConfig {
 
         // ✅ 커스텀 로그인 페이지
         http.formLogin( login -> login
-                                    //   .usernameParameter("id")           // 아이디 파라미터
-                                    //   .passwordParameter("pw")           // 비밀`번호 파라미터
+                                    //.usernameParameter("id")                              // 아이디 파라미터
+                                    //.passwordParameter("pw")                              // 비밀`번호 파라미터
                                       .loginPage("/login")                       // 로그인 페이지 경로
                                       .loginProcessingUrl("/login")     // 로그인 요청 경로
-                                    //   .defaultSuccessUrl("/?=true")      // 로그인 성공 후 리다이렉트 할 경로
+                                    //.defaultSuccessUrl("/?=true")                         // 로그인 성공 후 리다이렉트 할 경로
                                       .successHandler(loginSuccessHandler)                  // 로그인 성공 후 이벤트 핸들러 등록
+                                      .failureHandler(loginFailureHandler)                  // 로그인 실패 핸들러 설정
     
                         );
+
+        http.exceptionHandling( exception -> exception
+                                            // 예외 처리 페이지 설정
+                                            .accessDeniedPage("/exception")
+                                            // 접근 거부 핸들러 설정
+                                            .accessDeniedHandler(customAccessDeniedHandler)
+
+                              );
 
         // 사용자 정의 인증
         http.userDetailsService(userDetailServiceImpl);
